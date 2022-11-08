@@ -1,31 +1,26 @@
-import React, { useState } from 'react';
-import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
-import './App.css';
+import React, { useState } from "react"
+import { DragDropContext, Draggable, Droppable, DropResult } from "react-beautiful-dnd"
+import "./App.css"
 
 const listItems = [
   {
     id: "1",
-    name: "Tomate"
+    name: "Study Spanish"
   },
   {
     id: "2",
-    name: "Agua"
+    name: "Workout"
   },
   {
     id: "3",
-    name: "Leche"
+    name: "Film Youtube"
   },
   {
     id: "4",
-    name: "Harina"
-  },
-  {
-    id: "5",
-    name: "Carne"
+    name: "Grocery Shop"
   }
 ]
 
-// para saber que elemento arrastro con color distinto
 const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
   padding: 10,
   margin: `0 50px 15px 50px`,
@@ -37,30 +32,28 @@ const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
 
   ...draggableStyle
 })
-function App() {
 
-  const [ingredients, setIngredients] = useState(listItems);
+function App() {
+  const [todo, setTodo] = useState(listItems)
 
   const onDragEnd = (result: DropResult) => {
     const { source, destination } = result
-    if (!destination) {
-      return
-    }
-    const items = Array.from(ingredients)
-    const [reorderedItem] = items.splice(source.index, 1) // el 1 es cuantos elementos se van a mover
-    items.splice(destination.index, 0, reorderedItem)
+    if (!destination) return
 
-    setIngredients(items)
+    const items = Array.from(todo)
+    const [newOrder] = items.splice(source.index, 1)
+    items.splice(destination.index, 0, newOrder)
+
+    setTodo(items)
   }
-
   return (
     <div className="App">
-      <h1>Lista de ingredientes</h1>
+      <h1>Drag and Drop</h1>
       <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="ingredients">
+        <Droppable droppableId="todo">
           {(provided) => (
-            <div className="ingredientes" {...provided.droppableProps} ref={provided.innerRef}>
-              {ingredients.map(({ id, name }, index) => {
+            <div className="todo" {...provided.droppableProps} ref={provided.innerRef}>
+              {todo.map(({ id, name }, index) => {
                 return (
                   <Draggable key={id} draggableId={id} index={index}>
                     {(provided, snapshot) => (
@@ -84,4 +77,4 @@ function App() {
   )
 }
 
-export default App;
+export default App
